@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - E-Commerce Store</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-layout { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: start; margin-top: 28px; }
+        .admin-sidebar { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; box-shadow: var(--card-shadow); }
+        .admin-sidebar h3 { margin: 0 0 12px; padding: 8px 12px; font-size: 15px; color: var(--text-primary); }
+        .admin-sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .admin-sidebar li { padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 14px; color: var(--text-secondary); font-weight: 500; transition: all 0.2s ease; margin-bottom: 2px; }
+        .admin-sidebar li:hover { background: var(--bg-secondary); color: var(--primary); }
+        .admin-sidebar li.active { background: var(--bg-secondary); color: var(--primary); font-weight: 600; }
+        .admin-content { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 28px; box-shadow: var(--card-shadow); min-height: 500px; }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+        .admin-section h2 { margin: 0 0 20px; font-size: 20px; color: var(--text-primary); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .stat-card { background: var(--bg-secondary); border: 1px solid var(--card-border); border-radius: 12px; padding: 20px; text-align: center; }
+        .stat-card .stat-value { font-size: 28px; font-weight: 700; color: var(--primary); }
+        .stat-card .stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+        .admin-table-wrap { overflow-x: auto; }
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .admin-table th, .admin-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+        .admin-table th { font-weight: 600; color: var(--text-primary); background: var(--bg-secondary); font-size: 13px; }
+        .admin-table td { color: var(--text-secondary); }
+        .admin-table tr:hover td { background: var(--bg-secondary); }
+        .admin-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .admin-actions .btn { width: auto; padding: 6px 12px; font-size: 12px; }
+        .admin-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .badge-admin { background: #6366f1; color: white; }
+        .badge-user { background: var(--bg-secondary); color: var(--text-secondary); }
+        .status-badge { padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; display: inline-block; }
+        .status-Pending { background: #fef3c7; color: #92400e; }
+        .status-Processing { background: #dbeafe; color: #1e40af; }
+        .status-Shipped { background: #e0e7ff; color: #3730a3; }
+        .status-Delivered { background: #d1fae5; color: #065f46; }
+        .status-Cancelled { background: #fee2e2; color: #991b1b; }
+        html.dark .status-Pending { background: #78350f; color: #fde68a; }
+        html.dark .status-Processing { background: #1e3a5f; color: #bfdbfe; }
+        html.dark .status-Shipped { background: #312e81; color: #c7d2fe; }
+        html.dark .status-Delivered { background: #064e3b; color: #a7f3d0; }
+        html.dark .status-Cancelled { background: #7f1d1d; color: #fecaca; }
+        .admin-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 600px; }
+        .admin-form .full { grid-column: 1 / -1; }
+        .admin-form .btn { width: auto; }
+        .admin-search { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+        .admin-search input, .admin-search select { padding: 8px 12px; border: 1px solid var(--input-border); border-radius: 8px; font-size: 14px; background: var(--input-bg); color: var(--text-primary); }
+        @media (max-width: 768px) { .admin-layout { grid-template-columns: 1fr; } .admin-form { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="bg-mesh">
+        <div class="aurora aurora-1"></div>
+        <div class="aurora aurora-2"></div>
+        <div class="aurora aurora-3"></div>
+        <div class="aurora aurora-4"></div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <h1>E-Commerce Store</h1>
+            <ul class="nav-items">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="admin.html" class="active">Admin</a></li>
+                <button><a href="signin.html" id="adminLogout">Logout</a></button>
+                <li>
+                    <button type="button" id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                        <span class="theme-icon-wrap">
+                            <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                            <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        </span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1 class="page-title reveal">Admin Panel</h1>
+            <div class="admin-layout reveal">
+                <div class="admin-sidebar">
+                    <h3>Dashboard</h3>
+                    <ul>
+                        <li class="active" onclick="showAdminSection('dashboard', this)">Dashboard</li>
+                        <li onclick="showAdminSection('users', this)">Users</li>
+                        <li onclick="showAdminSection('products-list', this)">Products</li>
+                        <li onclick="showAdminSection('orders', this)">Orders</li>
+                        <li onclick="showAdminSection('messages', this)">Messages</li>
+                    </ul>
+                </div>
+
+                <div class="admin-content">
+                    <div id="admin-dashboard" class="admin-section active">
+                        <h2>Dashboard Overview</h2>
+                        <div class="stats-grid" id="statsGrid">
+                            <div class="stat-card"><div class="stat-value" id="statProducts">-</div><div class="stat-label">Products</div></div>
+                            <div class="stat-card"><div class="stat-value" id="statUsers">-</div><div class="stat-label">Users</div></div>
+                            <div class="stat-card"><div class="stat-value" id="statOrders">-</div><div class="stat-label">Orders</div></div>
+                            <div class="stat-card"><div class="stat-value" id="statRevenue">-</div><div class="stat-label">Revenue</div></div>
+                        </div>
+                        <h3 style="margin: 0 0 12px; font-size: 16px;">Recent Orders</h3>
+                        <div id="recentOrdersList"><p style="color: var(--text-light);">Loading...</p></div>
+                    </div>
+
+                    <div id="admin-users" class="admin-section">
+                        <h2>Users</h2>
+                        <div id="usersList"><p style="color: var(--text-light);">Loading...</p></div>
+                    </div>
+
+                    <div id="admin-products-list" class="admin-section">
+                        <h2>Products</h2>
+                        <div class="admin-search">
+                            <input type="text" id="adminProductSearch" placeholder="Search products..." oninput="adminSearchProducts()">
+                            <button class="btn btn-primary" style="width: auto;" onclick="showAddProductForm()">+ Add Product</button>
+                        </div>
+                        <div id="addProductForm" style="display: none; margin-bottom: 20px; padding: 20px; border: 1px solid var(--card-border); border-radius: 12px; background: var(--bg-secondary);">
+                            <h3 style="margin: 0 0 14px; font-size: 16px;">Add New Product</h3>
+                            <form class="admin-form" onsubmit="handleAddProduct(event)">
+                                <div class="form-group"><label>Name</label><input type="text" id="prodName" required></div>
+                                <div class="form-group"><label>Price</label><input type="number" step="0.01" id="prodPrice" required></div>
+                                <div class="form-group full"><label>Description</label><textarea id="prodDesc" required></textarea></div>
+                                <div class="form-group"><label>Rating</label><input type="number" step="0.1" id="prodRating" value="4.0"></div>
+                                <div class="form-group"><label>Category</label><input type="text" id="prodCategory" value="General"></div>
+                                <div class="form-group"><label>Stock</label><input type="number" id="prodStock" value="50"></div>
+                                <div class="form-group"><label>Image</label><input type="text" id="prodImage" placeholder="image.jpg"></div>
+                                <div class="full" style="display: flex; gap: 10px;">
+                                    <button type="submit" class="btn btn-primary" style="width: auto;">Save Product</button>
+                                    <button type="button" class="btn" style="width: auto;" onclick="document.getElementById('addProductForm').style.display='none'">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="editProductForm" style="display: none; margin-bottom: 20px; padding: 20px; border: 1px solid var(--card-border); border-radius: 12px; background: var(--bg-secondary);">
+                            <h3 style="margin: 0 0 14px; font-size: 16px;">Edit Product</h3>
+                            <form class="admin-form" onsubmit="handleEditProduct(event)">
+                                <input type="hidden" id="editProdId">
+                                <div class="form-group"><label>Name</label><input type="text" id="editProdName" required></div>
+                                <div class="form-group"><label>Price</label><input type="number" step="0.01" id="editProdPrice" required></div>
+                                <div class="form-group full"><label>Description</label><textarea id="editProdDesc" required></textarea></div>
+                                <div class="form-group"><label>Rating</label><input type="number" step="0.1" id="editProdRating"></div>
+                                <div class="form-group"><label>Category</label><input type="text" id="editProdCategory"></div>
+                                <div class="form-group"><label>Stock</label><input type="number" id="editProdStock"></div>
+                                <div class="form-group"><label>Image</label><input type="text" id="editProdImage"></div>
+                                <div class="full" style="display: flex; gap: 10px;">
+                                    <button type="submit" class="btn btn-primary" style="width: auto;">Update Product</button>
+                                    <button type="button" class="btn" style="width: auto;" onclick="document.getElementById('editProductForm').style.display='none'">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="adminProductsList"></div>
+                    </div>
+
+                    <div id="admin-orders" class="admin-section">
+                        <h2>Orders</h2>
+                        <div id="ordersList"><p style="color: var(--text-light);">Loading...</p></div>
+                    </div>
+
+                    <div id="admin-messages" class="admin-section">
+                        <h2>Contact Messages</h2>
+                        <div id="messagesList"><p style="color: var(--text-light);">Loading...</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
+        <p>Email: support@ecommerce.com | Phone: (555) 123-4567</p>
+    </footer>
+
+    <div id="toast-container" style="position:fixed;top:84px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none"></div>
+    <script>
+        const API = 'http://localhost:5000/api';
+        const token = localStorage.getItem('token');
+
+        if (!token) { window.location.href = 'signin.html'; }
+
+        function authHeaders() { return { 'Content-Type': 'application/json', 'x-auth-token': token }; }
+
+        function showAdminSection(id, el) {
+            if (el) {
+                document.querySelectorAll('.admin-sidebar li').forEach(l => l.classList.remove('active'));
+                el.classList.add('active');
+            }
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.getElementById('admin-' + id).classList.add('active');
+            if (id === 'dashboard') loadDashboard();
+            if (id === 'users') loadUsers();
+            if (id === 'products-list') loadAdminProducts();
+            if (id === 'orders') loadOrders();
+            if (id === 'messages') loadMessages();
+        }
+
+        async function apiGet(url) {
+            const res = await fetch(API + url, { headers: authHeaders() });
+            if (res.status === 401) { localStorage.removeItem('token'); window.location.href = 'signin.html'; }
+            return res.json();
+        }
+
+        async function apiPost(url, body) {
+            const res = await fetch(API + url, { method: 'POST', headers: authHeaders(), body: JSON.stringify(body) });
+            if (res.status === 401) { localStorage.removeItem('token'); window.location.href = 'signin.html'; }
+            return res.json();
+        }
+
+        async function apiPut(url, body) {
+            const res = await fetch(API + url, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(body) });
+            if (res.status === 401) { localStorage.removeItem('token'); window.location.href = 'signin.html'; }
+            return res.json();
+        }
+
+        async function apiDelete(url) {
+            const res = await fetch(API + url, { method: 'DELETE', headers: authHeaders() });
+            if (res.status === 401) { localStorage.removeItem('token'); window.location.href = 'signin.html'; }
+            return res.json();
+        }
+
+        async function loadDashboard() {
+            const data = await apiGet('/admin/stats');
+            document.getElementById('statProducts').textContent = data.totalProducts;
+            document.getElementById('statUsers').textContent = data.totalUsers;
+            document.getElementById('statOrders').textContent = data.totalOrders;
+            document.getElementById('statRevenue').textContent = '$' + data.totalRevenue.toFixed(2);
+            const list = document.getElementById('recentOrdersList');
+            if (data.recentOrders && data.recentOrders.length) {
+                list.innerHTML = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead><tbody>' +
+                    data.recentOrders.map(o => `<tr><td>${o._id.slice(-8)}</td><td>${o.userId ? o.userId.firstName + ' ' + o.userId.lastName : 'N/A'}</td><td>$${o.total.toFixed(2)}</td><td><span class="status-badge status-${o.status}">${o.status}</span></td><td>${new Date(o.createdAt).toLocaleDateString()}</td></tr>`).join('') +
+                    '</tbody></table></div>';
+            } else {
+                list.innerHTML = '<p style="color: var(--text-light);">No orders yet.</p>';
+            }
+        }
+
+        async function loadUsers() {
+            const users = await apiGet('/users');
+            const list = document.getElementById('usersList');
+            if (!users.length) { list.innerHTML = '<p style="color: var(--text-light);">No users found.</p>'; return; }
+            list.innerHTML = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead><tbody>' +
+                users.map(u => `<tr><td>${u.firstName} ${u.lastName}</td><td>${u.email}</td><td><span class="admin-badge ${u.isAdmin ? 'badge-admin' : 'badge-user'}">${u.isAdmin ? 'Admin' : 'User'}</span></td><td>${new Date(u.createdAt).toLocaleDateString()}</td><td class="admin-actions">${!u.isAdmin ? `<button class="btn btn-danger btn-sm" onclick="deleteUser('${u._id}')">Delete</button>` : ''}</td></tr>`).join('') +
+                '</tbody></table></div>';
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('Delete this user?')) return;
+            await apiDelete('/users/' + id);
+            showToast('success', 'Deleted', 'User removed');
+            loadUsers();
+        }
+
+        async function loadAdminProducts() {
+            const products = await apiGet('/products');
+            const searchTerm = (document.getElementById('adminProductSearch').value || '').toLowerCase();
+            const filtered = searchTerm ? products.filter(p => p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm)) : products;
+            const list = document.getElementById('adminProductsList');
+            if (!filtered.length) { list.innerHTML = '<p style="color: var(--text-light);">No products found.</p>'; return; }
+            list.innerHTML = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Price</th><th>Rating</th><th>Stock</th><th>Category</th><th>Actions</th></tr></thead><tbody>' +
+                filtered.map(p => `<tr><td>${p.name}</td><td>$${p.price}</td><td>${p.rating}</td><td>${p.stock}</td><td>${p.category}</td><td class="admin-actions"><button class="btn btn-sm" onclick="editProduct('${p._id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteProduct('${p._id}')">Delete</button></td></tr>`).join('') +
+                '</tbody></table></div>';
+        }
+
+        function adminSearchProducts() { loadAdminProducts(); }
+        function showAddProductForm() { document.getElementById('addProductForm').style.display = 'block'; }
+
+        async function handleAddProduct(e) {
+            e.preventDefault();
+            await apiPost('/products', {
+                name: document.getElementById('prodName').value,
+                price: parseFloat(document.getElementById('prodPrice').value),
+                description: document.getElementById('prodDesc').value,
+                rating: parseFloat(document.getElementById('prodRating').value) || 4.0,
+                category: document.getElementById('prodCategory').value || 'General',
+                stock: parseInt(document.getElementById('prodStock').value) || 50,
+                image: document.getElementById('prodImage').value || ''
+            });
+            showToast('success', 'Added', 'Product created');
+            document.getElementById('addProductForm').style.display = 'none';
+            document.querySelector('.admin-form').reset();
+            loadAdminProducts();
+        }
+
+        async function editProduct(id) {
+            const products = await apiGet('/products');
+            const p = products.find(x => x._id === id);
+            if (!p) return;
+            document.getElementById('editProdId').value = p._id;
+            document.getElementById('editProdName').value = p.name;
+            document.getElementById('editProdPrice').value = p.price;
+            document.getElementById('editProdDesc').value = p.description;
+            document.getElementById('editProdRating').value = p.rating;
+            document.getElementById('editProdCategory').value = p.category;
+            document.getElementById('editProdStock').value = p.stock;
+            document.getElementById('editProdImage').value = p.image || '';
+            document.getElementById('editProductForm').style.display = 'block';
+        }
+
+        async function handleEditProduct(e) {
+            e.preventDefault();
+            const id = document.getElementById('editProdId').value;
+            await apiPut('/products/' + id, {
+                name: document.getElementById('editProdName').value,
+                price: parseFloat(document.getElementById('editProdPrice').value),
+                description: document.getElementById('editProdDesc').value,
+                rating: parseFloat(document.getElementById('editProdRating').value) || 4.0,
+                category: document.getElementById('editProdCategory').value || 'General',
+                stock: parseInt(document.getElementById('editProdStock').value) || 50,
+                image: document.getElementById('editProdImage').value || ''
+            });
+            showToast('success', 'Updated', 'Product updated');
+            document.getElementById('editProductForm').style.display = 'none';
+            loadAdminProducts();
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Delete this product?')) return;
+            await apiDelete('/products/' + id);
+            showToast('success', 'Deleted', 'Product removed');
+            loadAdminProducts();
+        }
+
+        async function loadOrders() {
+            const orders = await apiGet('/orders/all');
+            const list = document.getElementById('ordersList');
+            if (!orders.length) { list.innerHTML = '<p style="color: var(--text-light);">No orders found.</p>'; return; }
+            list.innerHTML = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>' +
+                orders.map(o => {
+                    const customer = o.userId ? o.userId.firstName + ' ' + o.userId.lastName : 'N/A';
+                    const itemStr = o.items.map(i => i.name + ' x' + i.quantity).join(', ');
+                    return `<tr><td>${o._id.slice(-8)}</td><td>${customer}</td><td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${itemStr}">${itemStr}</td><td>$${o.total.toFixed(2)}</td><td><span class="status-badge status-${o.status}">${o.status}</span></td><td>${new Date(o.createdAt).toLocaleDateString()}</td><td class="admin-actions">
+                        <select onchange="updateOrderStatus('${o._id}', this.value)" style="padding:4px 8px;border:1px solid var(--input-border);border-radius:6px;font-size:12px;background:var(--input-bg);color:var(--text-primary);">
+                            <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                            <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                            <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </td></tr>`;
+                }).join('') +
+                '</tbody></table></div>';
+        }
+
+        async function updateOrderStatus(id, status) {
+            await apiPut('/orders/' + id + '/status', { status });
+            showToast('success', 'Updated', 'Order status changed to ' + status);
+            loadOrders();
+        }
+
+        async function loadMessages() {
+            const msgs = await apiGet('/contact');
+            const list = document.getElementById('messagesList');
+            if (!msgs.length) { list.innerHTML = '<p style="color: var(--text-light);">No messages yet.</p>'; return; }
+            list.innerHTML = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Date</th></tr></thead><tbody>' +
+                msgs.map(m => `<tr><td>${m.name}</td><td>${m.email}</td><td>${m.subject}</td><td style="max-width:250px">${m.message}</td><td>${m.date}</td></tr>`).join('') +
+                '</tbody></table></div>';
+        }
+
+        document.getElementById('adminLogout').addEventListener('click', function (e) {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'signin.html';
+        });
+
+        loadDashboard();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

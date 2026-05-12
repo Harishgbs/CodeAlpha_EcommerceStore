@@ -7,32 +7,48 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="bg-mesh">
+        <div class="aurora aurora-1"></div>
+        <div class="aurora aurora-2"></div>
+        <div class="aurora aurora-3"></div>
+        <div class="aurora aurora-4"></div>
+    </div>
+
     <header>
         <nav class="navbar">
             <h1>E-Commerce Store</h1>
-            <ul class="menu">
+            <ul class="nav-items">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="products.html">Products</a></li>
-                <li><a href="cart.html">Shopping Cart</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="about.html" class="active">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="account.html">Account</a></li>
+                <li class="admin-nav-item"><a href="admin.html">Admin</a></li>
                 <button><a href="signup.html">Signup</a></button>
                 <button><a href="signin.html">Signin</a></button>
+                <li>
+                    <button type="button" id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                        <span class="theme-icon-wrap">
+                            <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                            <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        </span>
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
 
     <main>
         <div class="container">
-            <h1>About Us</h1>
+            <h1 class="page-title reveal">About Us</h1>
 
-            <section style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin: 30px 0;">
+            <section class="section-card reveal">
                 <h2>Our Story</h2>
                 <p>Founded in 2020, E-Commerce Store has been dedicated to providing customers with high-quality products at competitive prices. We believe in making online shopping convenient, secure, and enjoyable for everyone.</p>
             </section>
 
-            <section style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin: 30px 0;">
+            <section class="section-card reveal">
                 <h2>Our Mission</h2>
                 <p>Our mission is to revolutionize the online shopping experience by offering:</p>
                 <ul>
@@ -44,37 +60,37 @@
                 </ul>
             </section>
 
-            <section style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin: 30px 0;">
+            <section class="section-card reveal">
                 <h2>Why Choose Us?</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
-                    <div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                <div class="grid-auto-fit">
+                    <div class="info-card">
                         <h3>Quality Products</h3>
                         <p>We carefully select all our products to ensure high quality and customer satisfaction.</p>
                     </div>
-                    <div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                    <div class="info-card">
                         <h3>Best Prices</h3>
                         <p>We offer competitive prices without compromising on quality.</p>
                     </div>
-                    <div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                    <div class="info-card">
                         <h3>Fast Delivery</h3>
                         <p>We ship quickly and provide tracking information for all orders.</p>
                     </div>
-                    <div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                    <div class="info-card">
                         <h3>Customer Support</h3>
                         <p>Our dedicated team is available 24/7 to assist with any questions.</p>
                     </div>
-                    <div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                    <div class="info-card">
                         <h3>Secure Shopping</h3>
                         <p>Your data is protected with industry-leading security measures.</p>
                     </div>
-                    <div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                    <div class="info-card">
                         <h3>Easy Returns</h3>
                         <p>30-day money-back guarantee on all products.</p>
                     </div>
                 </div>
             </section>
 
-            <section style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin: 30px 0;">
+            <section class="section-card reveal">
                 <h2>Our Team</h2>
                 <p>We have a dedicated team of professionals committed to delivering exceptional service and quality products to our customers worldwide.</p>
             </section>
@@ -86,6 +102,7 @@
         <p>Email: support@ecommerce.com | Phone: (555) 123-4567</p>
     </footer>
 
+    <div id="toast-container" style="position:fixed;top:84px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none"></div>
     <script src="script.js"></script>
 </body>
 </html>

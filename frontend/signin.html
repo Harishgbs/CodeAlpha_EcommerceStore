@@ -7,62 +7,63 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="bg-mesh">
+        <div class="aurora aurora-1"></div>
+        <div class="aurora aurora-2"></div>
+        <div class="aurora aurora-3"></div>
+        <div class="aurora aurora-4"></div>
+    </div>
+
     <header>
         <nav class="navbar">
             <h1>E-Commerce Store</h1>
-            <ul class="menu">
+            <ul class="nav-items">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="products.html">Products</a></li>
-                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="cart.html">Cart</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="account.html">Account</a></li>
+                <li class="admin-nav-item"><a href="admin.html">Admin</a></li>
                 <button><a href="signup.html">Signup</a></button>
-                <button><a href="signin.html">Signin</a></button>
+                <button><a href="signin.html" class="active">Signin</a></button>
+                <li>
+                    <button type="button" id="theme-toggle" class="theme-btn" aria-label="Toggle theme">
+                        <span class="theme-icon-wrap">
+                            <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                            <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        </span>
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
 
     <main>
         <div class="container">
-            <div style="max-width: 500px; margin: 50px auto;">
-                <div style="background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-                    <h1 style="text-align: center; margin-top: 0;">Sign In</h1>
-                    <p style="text-align: center; color: #666;">Welcome back! Please log in to your account</p>
-
-                    <form onsubmit="handleSignin(event)" style="margin-top: 30px;">
+            <div class="auth-wrapper reveal">
+                <div class="auth-card">
+                    <h1>Sign In</h1>
+                    <p class="auth-subtitle">Welcome back! Please log in to your account</p>
+                    <form onsubmit="handleSignin(event)">
                         <div class="form-group">
                             <label for="email">Email Address</label>
                             <input type="email" id="email" name="email" required>
                         </div>
-
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input type="password" id="password" name="password" required>
                         </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
-                            <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
-                                <input type="checkbox" id="rememberMe" name="rememberMe">
-                                Remember me
+                        <div class="auth-links">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberMe" name="rememberMe"> Remember me
                             </label>
-                            <a href="#" style="color: darkcyan; font-size: 14px;">Forgot password?</a>
+                            <a href="#">Forgot password?</a>
                         </div>
-
-                        <button type="submit" class="btn" style="width: 100%; padding: 12px; font-size: 16px;">Sign In</button>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 24px;">Sign In</button>
                     </form>
-
-                    <hr style="margin: 30px 0; border: 1px solid #eee;">
-
-                    <p style="text-align: center;">
-                        Don't have an account? 
-                        <a href="signup.html" style="color: darkcyan; font-weight: 600;">Create one now</a>
-                    </p>
-
-                    <div style="margin-top: 20px; text-align: center; color: #999; font-size: 12px;">
-                        <p>Demo credentials:</p>
-                        <p>First, <a href="signup.html">create an account</a> to test the store</p>
-                    </div>
+                    <hr class="auth-divider">
+                    <p class="auth-footer">Don't have an account? <a href="signup.html">Create one now</a></p>
                 </div>
             </div>
         </div>
@@ -73,6 +74,7 @@
         <p>Email: support@ecommerce.com | Phone: (555) 123-4567</p>
     </footer>
 
+    <div id="toast-container" style="position:fixed;top:84px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none"></div>
     <script src="script.js"></script>
 </body>
 </html>
