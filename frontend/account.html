@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - E-Commerce Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>E-Commerce Store</h1>
+            <ul class="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="account.html">Account</a></li>
+                <button><a href="signup.html">Signup</a></button>
+                <button><a href="signin.html" onclick="logout(); return false;">Logout</a></button>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>My Account</h1>
+
+            <div class="account-container">
+                <div class="account-sidebar">
+                    <ul>
+                        <li class="active" onclick="showSection('profile')">Profile Information</li>
+                        <li onclick="showSection('orders')">Order History</li>
+                        <li onclick="showSection('settings')">Settings</li>
+                        <li onclick="logout()" style="cursor: pointer; color: red;">Logout</li>
+                    </ul>
+                </div>
+
+                <div class="account-content">
+                    <!-- Profile Section -->
+                    <div id="profile" class="account-section">
+                        <h2>Profile Information</h2>
+                        <div id="profileInfo" style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                            <p>Please log in to view your profile information.</p>
+                            <a href="signin.html" class="btn" style="display: inline-block; margin-top: 10px;">Sign In</a>
+                        </div>
+                    </div>
+
+                    <!-- Orders Section -->
+                    <div id="orders" class="account-section" style="display: none;">
+                        <h2>Order History</h2>
+                        <div id="ordersInfo" style="background: white; border-radius: 8px;">
+                            <div id="ordersList"></div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div id="settings" class="account-section" style="display: none;">
+                        <h2>Settings</h2>
+                        <form style="background: white; padding: 20px; border-radius: 8px;">
+                            <div class="form-group">
+                                <label for="oldPassword">Old Password</label>
+                                <input type="password" id="oldPassword" name="oldPassword">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" id="newPassword" name="newPassword">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword">
+                            </div>
+
+                            <button type="submit" class="btn">Update Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
+        <p>Email: support@ecommerce.com | Phone: (555) 123-4567</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.account-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Remove active class from all sidebar items
+            document.querySelectorAll('.account-sidebar li').forEach(li => {
+                li.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).style.display = 'block';
+
+            // Add active class to clicked sidebar item
+            event.target.classList.add('active');
+        }
+
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('cart');
+            alert('Logged out successfully!');
+            window.location.href = 'index.html';
+        }
+
+        function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!user) {
+                window.location.href = 'signin.html';
+                return;
+            }
+
+            const profileInfo = document.getElementById('profileInfo');
+            profileInfo.innerHTML = `
+                <div style="background: white; padding: 20px; border-radius: 8px;">
+                    <p><strong>First Name:</strong> ${user.firstName}</p>
+                    <p><strong>Last Name:</strong> ${user.lastName}</p>
+                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Member Since:</strong> ${new Date().toLocaleDateString()}</p>
+                </div>
+            `;
+
+            // Load order history
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const ordersList = document.getElementById('ordersList');
+
+            if (orders.length === 0) {
+                ordersList.innerHTML = '<div class="empty-state"><p>No orders yet</p><a href="products.html" class="btn" style="display: inline-block; margin-top: 10px;">Start Shopping</a></div>';
+            } else {
+                ordersList.innerHTML = orders.map(order => `
+                    <div style="padding: 20px; border-bottom: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <strong>${order.id}</strong>
+                            <span>${order.date}</span>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <p><strong>Items:</strong> ${order.items.length}</p>
+                            <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
+                        </div>
+                        <button class="btn" style="width: auto;" onclick="viewOrder('${order.id}')">View Details</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function viewOrder(orderId) {
+            alert('Order Details for ' + orderId);
+        }
+
+        loadUserProfile();
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - E-Commerce Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>E-Commerce Store</h1>
+            <ul class="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="account.html">Account</a></li>
+                <button><a href="signup.html">Signup</a></button>
+                <button><a href="signin.html">Signin</a></button>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div style="max-width: 500px; margin: 50px auto;">
+                <div style="background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <h1 style="text-align: center; margin-top: 0;">Create Account</h1>
+                    <p style="text-align: center; color: #666;">Join our community and start shopping today</p>
+
+                    <form onsubmit="handleSignup(event)" style="margin-top: 30px;">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                            <label for="agreeTerms" style="margin: 0;">I agree to the Terms and Conditions</label>
+                        </div>
+
+                        <button type="submit" class="btn" style="width: 100%; padding: 12px; font-size: 16px;">Sign Up</button>
+                    </form>
+
+                    <p style="text-align: center; margin-top: 20px;">
+                        Already have an account? 
+                        <a href="signin.html" style="color: darkcyan; font-weight: 600;">Sign In</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
+        <p>Email: support@ecommerce.com | Phone: (555) 123-4567</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - E-Commerce Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>E-Commerce Store</h1>
+            <ul class="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="account.html">Account</a></li>
+                <button><a href="signup.html">Signup</a></button>
+                <button><a href="signin.html">Signin</a></button>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div style="max-width: 500px; margin: 50px auto;">
+                <div style="background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <h1 style="text-align: center; margin-top: 0;">Sign In</h1>
+                    <p style="text-align: center; color: #666;">Welcome back! Please log in to your account</p>
+
+                    <form onsubmit="handleSignin(event)" style="margin-top: 30px;">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
+                            <label style="display: flex; align-items: center; gap: 8px; margin: 0;">
+                                <input type="checkbox" id="rememberMe" name="rememberMe">
+                                Remember me
+                            </label>
+                            <a href="#" style="color: darkcyan; font-size: 14px;">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="btn" style="width: 100%; padding: 12px; font-size: 16px;">Sign In</button>
+                    </form>
+
+                    <hr style="margin: 30px 0; border: 1px solid #eee;">
+
+                    <p style="text-align: center;">
+                        Don't have an account? 
+                        <a href="signup.html" style="color: darkcyan; font-weight: 600;">Create one now</a>
+                    </p>
+
+                    <div style="margin-top: 20px; text-align: center; color: #999; font-size: 12px;">
+                        <p>Demo credentials:</p>
+                        <p>First, <a href="signup.html">create an account</a> to test the store</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
+        <p>Email: support@ecommerce.com | Phone: (555) 123-4567</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

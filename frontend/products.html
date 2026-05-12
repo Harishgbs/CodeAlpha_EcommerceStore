@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - E-Commerce Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>E-Commerce Store</h1>
+            <ul class="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="account.html">Account</a></li>
+                <button><a href="signup.html">Signup</a></button>
+                <button><a href="signin.html">Signin</a></button>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>All Products</h1>
+            
+            <div style="margin-bottom: 30px; display: flex; gap: 20px;">
+                <input type="text" id="searchInput" placeholder="Search products..." style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 300px;">
+                <select id="sortSelect" onchange="handleSort()" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <option value="">Sort By</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Highest Rating</option>
+                </select>
+            </div>
+
+            <div class="products"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
+        <p>Email: support@ecommerce.com | Phone: (555) 123-4567</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const term = this.value.toLowerCase();
+                const filtered = products.filter(p => 
+                    p.name.toLowerCase().includes(term) || 
+                    p.description.toLowerCase().includes(term)
+                );
+                renderFilteredProducts(filtered);
+            });
+        }
+
+        function handleSort() {
+            const sortValue = document.getElementById('sortSelect').value;
+            let sorted = [...products];
+            
+            if (sortValue === 'price-low') {
+                sorted.sort((a, b) => a.price - b.price);
+            } else if (sortValue === 'price-high') {
+                sorted.sort((a, b) => b.price - a.price);
+            } else if (sortValue === 'rating') {
+                sorted.sort((a, b) => b.rating - a.rating);
+            }
+            
+            renderFilteredProducts(sorted);
+        }
+
+        function renderFilteredProducts(items) {
+            const productsContainer = document.querySelector('.products');
+            if (!productsContainer) return;
+
+            if (items.length === 0) {
+                productsContainer.innerHTML = '<div class="empty-state"><p>No products found</p></div>';
+                return;
+            }
+
+            productsContainer.innerHTML = items.map(product => `
+                <div class="product">
+                    <div class="product-image">Product ${product.id}</div>
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">$${product.price}</div>
+                        <div class="product-rating">⭐ ${product.rating} / 5</div>
+                        <button class="btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                        <button class="btn btn-secondary" onclick="viewProductDetail(${product.id})">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

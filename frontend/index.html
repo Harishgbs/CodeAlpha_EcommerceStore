@@ -3,35 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-Commerce Store</title>
+    <title>E-Commerce Store - Home</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <h1>
-            E-Commerce Store
-        </h1>
-        <nav>
-            <li>Home</li>
-            <li>Shopping cart</li>
-            <li>My Orders</li>
-            <li>About</li>
-            <li>Contact</li>
-            <button> Login </button>
+        <nav class="navbar">
+            <h1>E-Commerce Store</h1>
+            <ul class="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="account.html">Account</a></li>
+                <button><a href="signup.html">Signup</a></button>
+                <button><a href="signin.html">Signin</a></button>
+            </ul>
         </nav>
     </header>
+
     <main>
-        <div class="products">
-            <div class="product">
-                <img src="" alt="" .prodImg>
-                <div class="prodDesc">
-                    <p>Name</p>
-                    <p>Prize</p>
+        <div class="container">
+            <section class="hero">
+                <h2>Welcome to E-Commerce Store</h2>
+                <p>Discover amazing products at unbeatable prices</p>
+            </section>
+
+            <section>
+                <h2 style="text-align: center; margin-bottom: 30px;">Featured Products</h2>
+                <div class="products"></div>
+            </section>
+
+            <section style="background: #f0f0f0; padding: 40px 20px; border-radius: 10px; margin: 40px 0;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; text-align: center;">
+                    <div>
+                        <h3>🚚 Free Shipping</h3>
+                        <p>On orders over $100</p>
+                    </div>
+                    <div>
+                        <h3>💳 Secure Payment</h3>
+                        <p>100% secure transactions</p>
+                    </div>
+                    <div>
+                        <h3>🔄 Easy Returns</h3>
+                        <p>30-day money-back guarantee</p>
+                    </div>
+                    <div>
+                        <h3>📞 Support 24/7</h3>
+                        <p>Dedicated customer service</p>
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     </main>
-    <footer>
 
+    <footer>
+        <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
+        <p>Email: support@ecommerce.com | Phone: (555) 123-4567</p>
+        <p>Follow us on social media for updates and promotions</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>

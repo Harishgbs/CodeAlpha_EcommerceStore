@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - E-Commerce Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1>E-Commerce Store</h1>
+            <ul class="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Shopping Cart</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="account.html">Account</a></li>
+                <button><a href="signup.html">Signup</a></button>
+                <button><a href="signin.html">Signin</a></button>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div style="margin-bottom: 20px;">
+                <a href="products.html" style="color: darkcyan; text-decoration: underline;">← Back to Products</a>
+            </div>
+
+            <div id="productDetail" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                <!-- Product image will be inserted here -->
+            </div>
+
+            <section style="margin-top: 50px;">
+                <h2>Customer Reviews</h2>
+                <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    <div style="padding: 15px; border-bottom: 1px solid #eee;">
+                        <p><strong>⭐⭐⭐⭐⭐ John Doe</strong></p>
+                        <p>"Great product! Highly recommend this. Fast shipping and excellent quality."</p>
+                    </div>
+                    <div style="padding: 15px; border-bottom: 1px solid #eee;">
+                        <p><strong>⭐⭐⭐⭐ Jane Smith</strong></p>
+                        <p>"Good value for money. Works as described."</p>
+                    </div>
+                    <div style="padding: 15px;">
+                        <p><strong>⭐⭐⭐⭐⭐ Mike Johnson</strong></p>
+                        <p>"Excellent customer service. Will buy again!"</p>
+                    </div>
+                </div>
+            </section>
+
+            <section style="margin-top: 50px;">
+                <h2>Related Products</h2>
+                <div class="products" id="relatedProducts"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 E-Commerce Store. All rights reserved.</p>
+        <p>Email: support@ecommerce.com | Phone: (555) 123-4567</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function loadProductDetail() {
+            const selectedProduct = JSON.parse(localStorage.getItem('selectedProduct'));
+            if (!selectedProduct) {
+                window.location.href = 'products.html';
+                return;
+            }
+
+            const productDetail = document.getElementById('productDetail');
+            productDetail.innerHTML = `
+                <div>
+                    <div class="product-image" style="height: 400px; font-size: 20px;">
+                        Product ${selectedProduct.id}
+                    </div>
+                </div>
+                <div>
+                    <h1>${selectedProduct.name}</h1>
+                    <p style="font-size: 18px; color: darkcyan; margin: 15px 0;">Price: $${selectedProduct.price}</p>
+                    <p style="color: #ff9800; margin: 15px 0;">⭐ ${selectedProduct.rating} / 5 (127 reviews)</p>
+                    
+                    <h3>Description</h3>
+                    <p>${selectedProduct.description}</p>
+                    
+                    <h3>Product Details</h3>
+                    <ul>
+                        <li>Product ID: ${selectedProduct.id}</li>
+                        <li>Availability: In Stock</li>
+                        <li>Shipping: Free on orders over $100</li>
+                        <li>Returns: 30-day money-back guarantee</li>
+                    </ul>
+
+                    <div style="margin-top: 30px;">
+                        <button class="btn" onclick="addToCart(${selectedProduct.id}); alert('Added to cart!')" style="padding: 15px 30px; font-size: 16px;">Add to Cart</button>
+                        <button class="btn btn-secondary" onclick="window.location.href='products.html'" style="padding: 15px 30px; font-size: 16px; margin-top: 10px;">Continue Shopping</button>
+                    </div>
+                </div>
+            `;
+
+            // Load related products (randomly pick other products)
+            const relatedProducts = products.filter(p => p.id !== selectedProduct.id).slice(0, 3);
+            const relatedContainer = document.getElementById('relatedProducts');
+            relatedContainer.innerHTML = relatedProducts.map(product => `
+                <div class="product">
+                    <div class="product-image">Product ${product.id}</div>
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">$${product.price}</div>
+                        <div class="product-rating">⭐ ${product.rating} / 5</div>
+                        <button class="btn" onclick="addToCart(${product.id})">Add to Cart</button>
+                        <button class="btn btn-secondary" onclick="viewProductDetail(${product.id})">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        loadProductDetail();
+    </script>
+</body>
+</html>
